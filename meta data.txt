@@ -1,0 +1,43 @@
+ Dataset Schema Overview
+1. pizza_types
+Describes the different varieties of pizzas offered.
+
+pizza_type_id: Unique identifier for each pizza type
+
+name: Name of the pizza (e.g., Barbecue Chicken)
+
+category: Pizza category (e.g., Classic, Veggie, Chicken, Supreme)
+
+ingredients: List of ingredients used in the pizza
+
+2. pizzas
+Details individual pizzas with their type, size, and price.
+
+pizza_id: Unique identifier for each pizza
+
+pizza_type_id: Foreign key referring to pizza_types
+
+size: Pizza size (S, M, L, XL, XXL)
+
+price: Price of the pizza
+
+3. orders
+Captures customer orders by date and time.
+
+order_id: Unique identifier for each order
+
+order_date: Date the order was placed
+
+order_time: Time the order was placed
+
+4. order_details
+Stores line-level details for each order.
+
+order_details_id: Unique identifier for each item in an order
+
+order_id: Foreign key referring to orders
+
+pizza_id: Foreign key referring to pizzas
+
+quantity: Number of units of the pizza ordered
+
