@@ -5,7 +5,8 @@ select Count(order_id)  no_of_orders_placed from orders;
 select sum(quantity) as total_Quantity from order_details;
 
 -- Q.3 total Revenue
-select concat(round(Sum(Quantity*price)/1000000,2) ," M") as Revenue from order_details od join pizzas p
+select concat(round(Sum(Quantity*price)/1000000,2) ," M") as Revenue
+	from order_details od join pizzas p
 on p.pizza_id =od.pizza_id;
 
 --  Q4.avg order value
@@ -23,16 +24,25 @@ select
 from order_summary;
 
 -- Q5(i). highest pizza price 
-select p.pizza_type_id,name,size,price from pizzas p
+
+select p.pizza_type_id,
+	name,
+	size,
+	price 
+from pizzas p
 join pizza_types pt 
 on pt.pizza_type_id=p.pizza_type_id
-where price=(select max(price) from pizzas);
+where price=(select
+		max(price) from pizzas);
 
 
 
 -- Q5(ii). least Pizza Price 
 SELECT 
-    p.pizza_type_id, name, size, price
+    p.pizza_type_id, 
+	name,
+	size, 
+	price
 FROM
     pizzas p
         JOIN
@@ -44,6 +54,7 @@ WHERE
             pizzas);
 
 -- Q6. highest order value
+
   with order_amount as 
 	(select 
     order_id,
@@ -94,8 +105,7 @@ on o.order_id=od.order_id
 group by 1;
 
 -- Q10. monthly sales growth rate
-with monthly_sales as (
-				select concat(monthname(o.order_date),"-",year(o.order_date)) as Month_year,
+with monthly_sales as (Select concat(monthname(o.order_date),"-",year(o.order_date)) as Month_year,
                 concat(round(Sum(Quantity*price)/1000000,2)," M") as total_sales
                 from order_details od join pizzas p
 on p.pizza_id =od.pizza_id
@@ -110,7 +120,9 @@ select Month_year,
 from monthly_sales;
 
 -- Q11. highest od lowest months on revenue
-with Monthly_sales as (select monthname(o.order_date) as Month_,
+
+with Monthly_sales as (
+		select monthname(o.order_date) as Month_,
                 round(Sum(Quantity*price),2) as revenue
                 from order_details od join pizzas p
 on p.pizza_id =od.pizza_id
@@ -118,12 +130,9 @@ join orders O
 on o.order_id=od.order_id
 group by 1)
 select month_,revenue as Min_Max_sales from Monthly_sales
-where revenue= (
-select concat(min(revenue),"min_sales")  as sales from monthly_sales )
+where revenue= (select min(revenue) from monthly_sales )
 or
-revenue= (
- select concat(max(revenue) ,"max_sales")  as sales from Monthly_sales
-)
+revenue= ( select max(revenue)  from Monthly_sales)
 ;
 
 -- Q12. which day has highest sales
@@ -151,20 +160,20 @@ order by 2 desc;
 
  -- Q14. Top selling pizzas in each month 
 
-with pizza_sales as (select monthname(order_date) as month_, 
-						Name, 
-						sum(Quantity) as sold_quantity
+with pizza_sales as (select
+			monthname(order_date) as month_, 
+			name, 
+			sum(Quantity) as sold_quantity
                         from pizzas P
-						join order_details  od
-						on od.pizza_id= p.pizza_id 
-						join orders O 
-						on o.order_id=od.order_id
+			join order_details  od
+			on od.pizza_id= p.pizza_id 
+			join orders O 
+			on o.order_id=od.order_id
                         join pizza_types pt
                         on pt.pizza_type_id = p.pizza_type_id
-						group by 1,name
-					),
+			group by 1,name	),
 rank_orders as (select * ,
-				rank() over (partition by month_ order by sold_quantity desc) as rn 
+		rank() over (partition by month_ order by sold_quantity desc) as rn 
                 from pizza_sales
                 )
 select month_ as Month_name,name as Pizza_types,sold_quantity from rank_orders
@@ -204,17 +213,18 @@ GROUP BY category
 -- Q17. revenue pct contibution by category
 
 with Revenue_by_category as (SELECT 
-    category,
-    ROUND(SUM(price * Quantity), 2) AS revenue
-FROM
-    pizzas P
-        JOIN
-    order_details od ON od.pizza_id = p.pizza_id
-        JOIN
-    pizza_types pt ON pt.pizza_type_id = p.pizza_type_id
-GROUP BY category)
+   			 category,
+   			 ROUND(SUM(price * Quantity), 2) AS revenue
+			FROM
+			    pizzas P
+       			 JOIN  order_details od 
+			ON od.pizza_id = p.pizza_id
+        		JOIN pizza_types pt 
+			ON pt.pizza_type_id = p.pizza_type_id
+			GROUP BY category)
+	
 select category,
-		revenue,
+	revenue,
         sum(revenue) over() as total_revenue,
         round((revenue*100/sum(revenue) over()),2) as pct_revenue 
         from Revenue_by_category
