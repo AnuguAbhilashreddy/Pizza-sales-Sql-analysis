@@ -35,13 +35,25 @@ The data was structured across **four relational tables** simulating a typical p
 - Analyzed revenue trends, top-performing pizzas, category breakdowns, time-based patterns, and size-based sales
 - Delivered insights in a clear, presentation-ready format with summaries and KPIs
 
-## 🔍 Sample Insights:
+## 🎓 What I Learned
+
+- Writing advanced SQL queries with CTEs and CASE WHEN
+- Using aggregate functions to calculate KPIs
+- Converting raw data into meaningful business decisions
+- Structuring analysis in a project-ready format
+
+
+## 🔍 key Insights:
 - Revenue:₹20.45M
 - Orders : 21350
 - Classic Deluxe Pizza is the most sold (2,432 units)
 - Thai Chicken Pizza generated ₹1.09M revenue
 - Peak order time: 12–1 PM; Best day: Wednesday
 
+- Medium size pizzas generated the highest revenue overall.
+- Classic and Veg pizza categories contributed the most to sales volume.
+- Peak sales hours were between 6 PM – 9 PM on weekends.
+- Hawaiian and BBQ Chicken pizzas were among the lowest-selling items.
 ## 📥 Dataset:
 *Simulated dataset for learning purposes; not real customer data.*
 
